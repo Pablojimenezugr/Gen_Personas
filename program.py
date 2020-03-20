@@ -35,11 +35,13 @@ def cargarNombres_Apellidos(nombres, apes):
     fich2 = open("apellidos.txt")
     
     for linea in fich:
-        nombres.append( linea )
+        nombres.append( linea.strip('\n') )
+
     fich.close()
 
     for linea in fich2:
-        apes.append(linea)
+        apes.append( linea.strip('\n') )
+        
     fich2.close()
 
 # -------------------------------------------------------------------------
@@ -52,10 +54,14 @@ def generar_fecha(anio_i, anio_f):
     m = random.randint(1, 12)
     a = random.randint(anio_i, anio_f)   
   
-    return str(d) + "/" + str(m) + "/" + str(a)
+    return str(a) + "-" + str(m) + "-" + str(d)
 
-
-
+def insertSQL(personas):
+    s = ""
+    for p in personas:
+        s = "INSERT INTO `personas`(`Nombre`, `Apellidos`, `Nacimiento`, `Nota_media`) VALUES ('"
+        s += p.nombre + "','" + p.apellido + "','" + p.fecha_nac + "'," + str(p.nota_media) + ");"
+        print(s)
 
 nombres = []
 apes = []
@@ -70,5 +76,4 @@ for i in range( int(sys.argv[1]) ):
                              round(random.uniform(0.5, 10.0), 3)) 
                     )
 
-for p in personas:
-    print(p)
+insertSQL(personas)
